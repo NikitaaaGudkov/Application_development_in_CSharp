@@ -1,4 +1,7 @@
-﻿namespace ConsoleApp1
+﻿using System.Runtime.InteropServices;
+using System.Text;
+
+namespace ConsoleApp1
 {
     enum Gender { Male, Female }
     class FamilyMember
@@ -95,6 +98,78 @@
             }
             if (children.Count > 0)
                 PrintFamily(children.ToArray());
+        }
+
+
+        /// <summary>
+        /// Доработайте приложение генеалогического дерева таким образом чтобы программа выводила на экран близких 
+        /// родственников (жену/мужа) и братьев/сестёр определённого человека. Продумайте способ более красивого 
+        /// вывода с использованием горизонтальных и вертикальных черточек.
+        /// </summary>
+        public void SearchForCloseRelatives()
+        {
+            List<FamilyMember> listOfBrothersAndSisters = new List<FamilyMember>();
+            if(mother != null)
+            {
+                foreach (var member in mother.children)
+                {
+                    if (!listOfBrothersAndSisters.Contains(member) && member != this)
+                    {
+                        listOfBrothersAndSisters.Add(member);
+                    }
+                }
+            }
+            if (father != null)
+            {
+                foreach (var member in father.children)
+                {
+                    if (!listOfBrothersAndSisters.Contains(member) && member != this)
+                    {
+                        listOfBrothersAndSisters.Add(member);
+                    }
+                }
+            }
+            StringBuilder brothersAndSisters = new StringBuilder();
+            foreach (var member in listOfBrothersAndSisters)
+            {
+                brothersAndSisters.Append($"{member.name}\t");
+            }
+
+            List<FamilyMember> listOfWivesAndHusbands = new List<FamilyMember>();
+            if(this.children != null)
+            {
+                if(this.gender == Gender.Male)
+                {
+                    foreach (var child in this.children)
+                    { 
+                        if(child.mother != null && !listOfWivesAndHusbands.Contains(child.mother))
+                        {
+                            listOfWivesAndHusbands.Add(child.mother);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var child in this.children)
+                    {
+                        if (child.father != null && !listOfWivesAndHusbands.Contains(child.father))
+                        {
+                            listOfWivesAndHusbands.Add(child.father);
+                        }
+                    }
+                }
+            }
+            StringBuilder wivesAndHusbands = new StringBuilder();
+            foreach (var member in listOfWivesAndHusbands)
+            {
+                wivesAndHusbands.Append($"{member.name}\t");
+            }
+
+            Console.WriteLine($"""
+                Рассматриваемый член семьи: {this.name}
+                Его братья/сёстры:          |--- {brothersAndSisters}
+                Его жёны/мужья:             |--- {wivesAndHusbands}
+                """);
         }
 
     }

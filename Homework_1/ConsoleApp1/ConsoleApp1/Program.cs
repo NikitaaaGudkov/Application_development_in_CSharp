@@ -7,7 +7,7 @@
             FamilyMember grandfather = new() { mother = null, father = null, name = "Дедушка", gender = Gender.Male };
             FamilyMember grandmother = new() { mother = null, father = null, name = "Бабушка", gender = Gender.Female };
             FamilyMember father = new FamilyMember() { mother = grandmother, father = grandfather, name = "Папа", gender = Gender.Male };
-            grandfather.children = new FamilyMember[] { father };
+            
             FamilyMember mother = new FamilyMember() { mother = null, father = null, name = "Мама", gender = Gender.Female };
             FamilyMember mother2 = new FamilyMember() { father = null, mother = null, name = "Мама2", gender = Gender.Female };
             FamilyMember son = new FamilyMember() { mother = mother, father = father, name = "Сын", gender = Gender.Male };
@@ -18,9 +18,12 @@
             mother.children = new FamilyMember[] { son };
             father.children = new FamilyMember[] { son, son2 };
 
+            FamilyMember brother = new FamilyMember() { mother = grandmother, father = grandfather, name = "Брат", gender = Gender.Male };
+            FamilyMember sister = new FamilyMember() { mother = grandmother, father = grandfather, name = "Сестра", gender = Gender.Male };
+            grandfather.children = new FamilyMember[] { father, brother, sister };
+            grandmother.children = new FamilyMember[] { father, brother, sister };
 
-
-            grandfather.PrintFamily();
+            father.SearchForCloseRelatives();
 
         }
     }
