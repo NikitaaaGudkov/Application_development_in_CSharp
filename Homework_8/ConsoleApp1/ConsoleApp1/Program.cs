@@ -7,10 +7,10 @@
 string file = "utility.txt";
 string text = "текст";
 string directory = @"C:\Users\user\Desktop\HW_8";
-if(!Directory.Exists(directory))
+if (!Directory.Exists(directory))
 {
-	Console.WriteLine($"Директории {directory} не существует");
-	return;
+    Console.WriteLine($"Директории {directory} не существует");
+    return;
 }
 List<string> result = SearchFile(file, text, directory);
 if (result.Count == 0)
@@ -30,27 +30,27 @@ else
 
 static List<string> SearchFile(string targetFile, string targetText, string curDirectory)
 {
-	var result = new List<string>();
+    var result = new List<string>();
     string[] files = Directory.GetFiles(curDirectory);
-	foreach (var file in files)
-	{
-		if(Path.GetFileName(file) == targetFile)
-		{
+    foreach (var file in files)
+    {
+        if (Path.GetFileName(file) == targetFile)
+        {
             using (StreamReader streamReader = new StreamReader(new FileStream(file, FileMode.Open, FileAccess.Read)))
-			{
-				string text = streamReader.ReadToEnd();
-				if (text.Contains(targetText))
-				{
-					result.Add(file);
-				}
-			}
-		}
-	}
+            {
+                string text = streamReader.ReadToEnd();
+                if (text.Contains(targetText))
+                {
+                    result.Add(file);
+                }
+            }
+        }
+    }
 
-	string[] directories = Directory.GetDirectories(curDirectory);
-	foreach(var directory in directories) 
-	{
-		result.AddRange(SearchFile(targetFile, targetText, directory));
-	}
-	return result;
+    string[] directories = Directory.GetDirectories(curDirectory);
+    foreach (var directory in directories)
+    {
+        result.AddRange(SearchFile(targetFile, targetText, directory));
+    }
+    return result;
 }
